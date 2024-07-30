@@ -1,34 +1,40 @@
-const readline = require('readline');
-
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-let inputLines = [];
-rl.on('line', function (line) {
-    inputLines.push(line);
-    if (inputLines.length === 2) {
-        rl.close();
-    }
-});
-
-rl.on('close', function () {
-    const N = parseInt(inputLines[0].trim());
-    const S = inputLines[1].trim();
-
-    let toggledString = '';
-
-    for (let i = 0; i < N; i++) {
-        const char = S[i];
-        if (char >= 'a' && char <= 'z') {
-            toggledString += char.toUpperCase();
-        } else if (char >= 'A' && char <= 'Z') {
-            toggledString += char.toLowerCase();
-        } else {
-            toggledString += char;
+document.getElementById('divideButton').addEventListener('click', function() {
+    const arrayInput = document.getElementById('arrayInput').value;
+    const maxSum = parseInt(document.getElementById('maxSum').value);
+    const resultDiv = document.getElementById('result');
+    
+    // Parse the array input
+    const arr = arrayInput.split(',').map(num => parseInt(num.trim()));
+    
+    // Divide into chunks function
+    function divideIntoChunks(arr, n) {
+        const result = [];
+        let currentChunk = [];
+        let currentSum = 0;
+        
+        for (const num of arr) {
+            if (currentSum + num <= n) {
+                currentChunk.push(num);
+                currentSum += num;
+            } else {
+                if (currentChunk.length) {
+                    result.push(currentChunk);
+                }
+                currentChunk = [num];
+                currentSum = num;
+            }
         }
+        
+        if (currentChunk.length) {
+            result.push(currentChunk);
+        }
+        
+        return result;
     }
-
-    console.log(toggledString);
+    
+    // Calculate the chunks
+    const chunks = divideIntoChunks(arr, maxSum);
+    
+    // Display the result
+    resultDiv.innerHTML = chunks.map(chunk => `<p>[${chunk.join(', ')}]</p>`).join('');
 });
