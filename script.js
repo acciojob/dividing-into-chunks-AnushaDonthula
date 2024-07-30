@@ -1,8 +1,34 @@
-const arr = [1, 2, 3, 4, 1, 0, 2, 2];
+const readline = require('readline');
 
-const divide = (arr, n) => {
-  // Write your code here
-};
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-const n = prompt("Enter n: ");
-alert(JSON.stringify(divide(arr, n)));
+let inputLines = [];
+rl.on('line', function (line) {
+    inputLines.push(line);
+    if (inputLines.length === 2) {
+        rl.close();
+    }
+});
+
+rl.on('close', function () {
+    const N = parseInt(inputLines[0].trim());
+    const S = inputLines[1].trim();
+
+    let toggledString = '';
+
+    for (let i = 0; i < N; i++) {
+        const char = S[i];
+        if (char >= 'a' && char <= 'z') {
+            toggledString += char.toUpperCase();
+        } else if (char >= 'A' && char <= 'Z') {
+            toggledString += char.toLowerCase();
+        } else {
+            toggledString += char;
+        }
+    }
+
+    console.log(toggledString);
+});
